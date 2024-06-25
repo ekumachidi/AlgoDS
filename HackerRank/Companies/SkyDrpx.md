@@ -39,7 +39,41 @@ STDIN            FUNCTION
 Sample Output:
 2
 
+Solution:
 
+```ruby
+def find_largest_square_size(samples)
+  n = samples.size
+  return 0 if n == 0
+
+  max_square_size = 0
+  dp_table = Array.new(n) { Array.new(n, 0)}
+
+  samples.each_with_index do |row, i|
+    row.each_with_index do |value, j|
+      if value == 1
+        if i == 0 || j == 0
+          dp_table[i][j] = 1
+        else
+          dp_table[i][j] = [dp_table[i-1][j], dp_table[i][j-1], dp_table[i-1][j-1]].min + 1
+        end
+        max_square_size = [max_square_size, dp_table[i][j]].max
+      end
+    end
+  end
+
+  max_square_size
+end
+
+samples = [
+  [1, 1, 1, 1, 1],
+  [1, 1, 1, 0, 0],
+  [1, 1, 1, 0, 0],
+  [1, 1, 1, 0, 0],
+  [1, 1, 1, 1, 1]
+]
+puts find_largest_square_size(samples)
+```
 
 #### Question 2:
 A bank wants to know how many transactions were made by each of their customers in the years 2019, 2020, and 2021. The first two characters of the transaction id in the table transactions represent the year the transaction was made. For example, transaction id 20345 would have been made in 2020. Write an SQL query that returns all the users and the number of transactions made by them in years 2019, 2020, and 2021 in different columns.
